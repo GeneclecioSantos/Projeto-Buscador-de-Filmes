@@ -1,4 +1,4 @@
-export function GetMovies(desiredMovie) {
+export function GetMovies(desiredMovie, setMovies) {
   const xhr = new XMLHttpRequest(); //cria o navegador
   xhr.open(
     "GET",
@@ -13,10 +13,23 @@ export function GetMovies(desiredMovie) {
     if (xhr.readyState === 4) {
       if (xhr.status === 200) {
         const res = JSON.parse(xhr.responseText);
-        console.log(res.results);
 
-        const filterFilmes = { res };
-        console.log(filterFilmes);
+        const filterMovies = {
+          page: res.page,
+          totalPages: res.total_pages,
+          totalItens: res.total_results,
+          movies: res.results.map((item) => ({
+            id: item?.id,
+            name: item?.original_title,
+            description: item.overview,
+            note: item.vote_average,
+            date: item.release_date,
+            poster: item.poster_path,
+            backImage: item.backdrop_path,
+          })),
+        };
+
+        setMovies(filterMovies);
       }
     }
   };
