@@ -13,6 +13,7 @@ export function GetMovies(desiredMovie, setMovies) {
     if (xhr.readyState === 4) {
       if (xhr.status === 200) {
         const res = JSON.parse(xhr.responseText);
+        console.log(res);
 
         const filterMovies = {
           page: res.page,
@@ -28,6 +29,7 @@ export function GetMovies(desiredMovie, setMovies) {
             backImage: item.backdrop_path,
           })),
         };
+        console.log(filterMovies);
 
         setMovies(filterMovies);
       }

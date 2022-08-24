@@ -11,18 +11,22 @@ import { Header } from "../../components/Header/Header";
 import { CardMovie } from "../../components/Card/CardMovies";
 import { BiSearchAlt } from "react-icons/bi";
 import { GetMovies } from "../../Hook/useGetMovies";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthGoogleContext } from "../../context/AuthGoogle";
 
-export default function Home() {
+export default function HomeFilmes() {
   const [searchedMovie, setSearchedMovie] = useState("");
   const [listMovies, setListMovies] = useState("");
-
-  console.log(listMovies);
+  const filmesSalvos = JSON.parse(localStorage.getItem("filmesSalvos")) || [];
 
   function handleClear(setSearchedMovie, setListMovies) {
     setSearchedMovie("");
     setListMovies("");
   }
+
+  const { user } = useContext(AuthGoogleContext);
+  const userLogado = JSON.parse(user);
+  console.log(userLogado);
 
   return (
     <Flex w="100%" h="100vh" direction="column">
@@ -30,14 +34,14 @@ export default function Home() {
       <Flex h="100vh" bgColor="#353581" p="10px" justify="space-between">
         <Flex
           w="90%"
-          h="full"
+          h="100%"
           direction="column"
           justify="space-between"
           mr="5px"
         >
           <Flex
             w="full"
-            h="20%"
+            h="30%"
             bgColor="gray.300"
             borderRadius="10px"
             shadow="0 0 0.1em #d4d1d1"
@@ -75,6 +79,7 @@ export default function Home() {
               Limpar
             </Button>
           </Flex>
+          {/* Favoritos */}
           <Flex
             w="full"
             h="80%"
@@ -83,12 +88,58 @@ export default function Home() {
             borderRadius="10px"
             shadow="0 0 0.1em #d4d1d1"
             p="10px"
+            direction="column"
           >
-            <Text fontWeight="bold" color="white">
-              Favoritos
-            </Text>
+            <Flex justify="center" align="center">
+              <Text
+                fontWeight="bold"
+                color="white"
+                pb="10px"
+                textShadow="0 0 .2em gray"
+                fontFamily="cursive"
+                fontSize={{ base: "1rem", sm: "1.2rem", lg: "1.3rem" }}
+              >
+                Favoritos do {userLogado.displayName}
+              </Text>
+            </Flex>
+
+            <Divider />
+
+            <Flex
+              w="full"
+              h="330px"
+              direction="column"
+              wrap="wrap"
+              overflowY={filmesSalvos ? "scroll" : "none"}
+            >
+              {filmesSalvos ? (
+                <Flex direction="column" pb="10px">
+                  {filmesSalvos.map((movie, index) => (
+                    <Flex key={index} justify="center">
+                      <CardMovie movie={movie} />
+                    </Flex>
+                  ))}
+                </Flex>
+              ) : (
+                <Flex
+                  w="full"
+                  h="full"
+                  justify="center"
+                  align="center"
+                  fontFamily="cursive"
+                  color="gray"
+                  opacity="0.3"
+                  textShadow="0 0 .1em gray"
+                  fontSize="2rem"
+                >
+                  Nenhum filme adicionado a lista
+                </Flex>
+              )}
+            </Flex>
           </Flex>
         </Flex>
+
+        {/* Resultados */}
         <Flex
           w="90%"
           h="100%"
@@ -106,7 +157,7 @@ export default function Home() {
               pb="10px"
               textShadow="0 0 .2em gray"
               fontFamily="cursive"
-              fontSize={{ base: "1rem", sm: "2rem", lg: "1.3rem" }}
+              fontSize={{ base: "1rem", sm: "1.2rem", lg: "1.3rem" }}
             >
               Resultados
             </Text>
@@ -122,9 +173,9 @@ export default function Home() {
             overflowY={listMovies ? "scroll" : "none"}
           >
             {listMovies ? (
-              <Flex direction="column">
+              <Flex direction="column" pb="10px">
                 {listMovies.movies.map((movie, index) => (
-                  <Flex key={index}>
+                  <Flex key={index} justify="center">
                     <CardMovie movie={movie} />
                   </Flex>
                 ))}
