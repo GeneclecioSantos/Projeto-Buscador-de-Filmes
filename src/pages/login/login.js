@@ -12,7 +12,13 @@ export default function Login() {
 
   if (!signed) {
     return (
-      <Flex w="100%" h="100%" justify="center" align="center">
+      <Flex
+        w="100%"
+        h="100%"
+        justify="center"
+        align="center"
+        bgGradient="linear(to-r, rgb(218, 210, 153), rgb(176, 218, 185))"
+      >
         <Button colorScheme="blue" onClick={() => loginGoogle()}>
           Logar com o Google
         </Button>
