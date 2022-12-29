@@ -8,21 +8,20 @@ import {
   useBreakpointValue,
   Icon,
 } from "@chakra-ui/react";
-import { FaUserCircle, FaListAlt } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
 import { HiDotsCircleHorizontal } from "react-icons/hi";
 import Logo from "../../images/cinema.png";
-import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthGoogleContext } from "../../context/AuthGoogle";
 
 export function Header() {
-  const navigate = useNavigate();
   const isDesktop = useBreakpointValue({ base: false, sm: false, lg: true });
   const { user, signOut } = useContext(AuthGoogleContext);
 
+  const userLogado = JSON.parse(user);
+
   return (
     <Flex w="inherit" h="15%" bgColor="#76cae5" justify="space-between">
-      {/* logo */}
       <Flex
         justify="center"
         align="center"
@@ -69,9 +68,9 @@ export function Header() {
               borderRadius="50px"
               fontFamily="cursive"
               bgGradient="linear(to-r, #2d2d6a, #53539a)"
-              // onClick={() => navigate("/home")}
+              cursor="auto"
             >
-              Perfil
+              Olá, {userLogado.displayName}
             </Button>
             <Button
               leftIcon={<FaUserCircle />}
@@ -80,21 +79,9 @@ export function Header() {
               borderRadius="50px"
               fontFamily="cursive"
               bgGradient="linear(to-r, #2d2d6a, #53539a)"
-              // onClick={() => navigate("/home")}
               onClick={() => signOut()}
             >
               Sair
-            </Button>
-            <Button
-              leftIcon={<FaListAlt />}
-              colorScheme="white"
-              variant="solid"
-              borderRadius="50px"
-              fontFamily="cursive"
-              bgGradient="linear(to-r, #2d2d6a, #53539a)"
-              onClick={() => alert("Caminho para lista de favoritos")}
-            >
-              Lista
             </Button>
           </Stack>
         )}

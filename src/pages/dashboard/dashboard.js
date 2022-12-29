@@ -11,34 +11,22 @@ import { Header } from "../../components/Header/Header";
 import { CardMovie } from "../../components/Card/CardMovies";
 import { BiSearchAlt } from "react-icons/bi";
 import { GetMovies } from "../../Hook/useGetMovies";
-import { useContext, useState } from "react";
-import { AuthGoogleContext } from "../../context/AuthGoogle";
+import { useState } from "react";
 
 export default function HomeFilmes() {
   const [searchedMovie, setSearchedMovie] = useState("");
   const [listMovies, setListMovies] = useState("");
-  const filmesSalvos = JSON.parse(localStorage.getItem("filmesSalvos")) || [];
 
   function handleClear(setSearchedMovie, setListMovies) {
     setSearchedMovie("");
     setListMovies("");
   }
 
-  const { user } = useContext(AuthGoogleContext);
-  const userLogado = JSON.parse(user);
-  console.log(userLogado);
-
   return (
     <Flex w="100%" h="100vh" direction="column">
       <Header />
       <Flex h="100vh" bgColor="#353581" p="10px" justify="space-between">
-        <Flex
-          w="90%"
-          h="100%"
-          direction="column"
-          justify="space-between"
-          mr="5px"
-        >
+        <Flex w="100%" h="full" direction="column">
           <Flex
             w="full"
             h="30%"
@@ -48,6 +36,7 @@ export default function HomeFilmes() {
             p="10px"
             direction="column"
             justify="center"
+            mb="10px"
           >
             <InputGroup>
               <InputLeftElement children={<BiSearchAlt color="gray.300" />} />
@@ -79,11 +68,10 @@ export default function HomeFilmes() {
               Limpar
             </Button>
           </Flex>
-          {/* Favoritos */}
+
           <Flex
             w="full"
-            h="80%"
-            mt="10px"
+            h="70%"
             bgColor="gray.300"
             borderRadius="10px"
             shadow="0 0 0.1em #d4d1d1"
@@ -99,102 +87,39 @@ export default function HomeFilmes() {
                 fontFamily="cursive"
                 fontSize={{ base: "1rem", sm: "1.2rem", lg: "1.3rem" }}
               >
-                Favoritos do {userLogado.displayName}
+                Resultados
               </Text>
             </Flex>
 
             <Divider />
 
-            <Flex
-              w="full"
-              h="330px"
-              direction="column"
-              wrap="wrap"
-              overflowY={filmesSalvos ? "scroll" : "none"}
-            >
-              {filmesSalvos ? (
-                <Flex direction="column" pb="10px">
-                  {filmesSalvos.map((movie, index) => (
-                    <Flex key={index} justify="center">
-                      <CardMovie movie={movie} />
-                    </Flex>
-                  ))}
-                </Flex>
-              ) : (
-                <Flex
-                  w="full"
-                  h="full"
-                  justify="center"
-                  align="center"
-                  fontFamily="cursive"
-                  color="gray"
-                  opacity="0.3"
-                  textShadow="0 0 .1em gray"
-                  fontSize="2rem"
-                >
-                  Nenhum filme adicionado a lista
-                </Flex>
-              )}
-            </Flex>
-          </Flex>
-        </Flex>
-
-        {/* Resultados */}
-        <Flex
-          w="90%"
-          h="100%"
-          bgColor="gray.300"
-          borderRadius="10px"
-          shadow="0 0 0.1em #d4d1d1"
-          ml="5px"
-          p="10px"
-          direction="column"
-        >
-          <Flex justify="center" align="center">
-            <Text
-              fontWeight="bold"
-              color="white"
-              pb="10px"
-              textShadow="0 0 .2em gray"
-              fontFamily="cursive"
-              fontSize={{ base: "1rem", sm: "1.2rem", lg: "1.3rem" }}
-            >
-              Resultados
-            </Text>
-          </Flex>
-
-          <Divider />
-
-          <Flex
-            w="full"
-            h="500px"
-            direction="column"
-            wrap="wrap"
-            overflowY={listMovies ? "scroll" : "none"}
-          >
-            {listMovies ? (
-              <Flex direction="column" pb="10px">
-                {listMovies.movies.map((movie, index) => (
-                  <Flex key={index} justify="center">
-                    <CardMovie movie={movie} />
+            <Flex wrap="wrap" overflowY={listMovies ? "scroll" : "none"}>
+              <Flex w="full" direction="column">
+                {listMovies ? (
+                  <Flex direction="column" pb="10px">
+                    {listMovies.movies.map((movie, index) => (
+                      <Flex key={index} justify="center">
+                        <CardMovie movie={movie} />
+                      </Flex>
+                    ))}
                   </Flex>
-                ))}
+                ) : (
+                  <Flex
+                    w="full"
+                    h="full"
+                    justify="center"
+                    align="center"
+                    fontFamily="cursive"
+                    color="gray"
+                    opacity="0.3"
+                    textShadow="0 0 .1em gray"
+                    fontSize="3rem"
+                  >
+                    nenhum filme foi pesquisado
+                  </Flex>
+                )}
               </Flex>
-            ) : (
-              <Flex
-                w="full"
-                h="full"
-                justify="center"
-                align="center"
-                fontFamily="cursive"
-                color="gray"
-                opacity="0.3"
-                textShadow="0 0 .1em gray"
-                fontSize="3rem"
-              >
-                nenhum filme foi pesquisado
-              </Flex>
-            )}
+            </Flex>
           </Flex>
         </Flex>
       </Flex>

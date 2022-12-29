@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 import { AuthGoogleContext } from "../../context/AuthGoogle";
 
 export default function Login() {
-  const { signInGoogle, signed, user } = useContext(AuthGoogleContext);
+  const { signInGoogle, signed } = useContext(AuthGoogleContext);
 
   function loginGoogle() {
     signInGoogle();
@@ -17,7 +17,7 @@ export default function Login() {
         h="100%"
         justify="center"
         align="center"
-        bgGradient="linear(to-r, rgb(218, 210, 153), rgb(176, 218, 185))"
+        bgGradient="linear(to-r, rgb(140 155 251), rgb(176 218 212))"
       >
         <Button colorScheme="blue" onClick={() => loginGoogle()}>
           Logar com o Google
